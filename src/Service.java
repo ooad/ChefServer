@@ -9,16 +9,18 @@ public class Service {
         this.chefHandler = chefServerService;
     }
     public void SelectService(String receiveFromClient){
-        if (receiveFromClient.startsWith("ISCONNECTSERVER")) {
-            System.out.println("entry");
-            chefHandler.FeedbackToClient("ISCONNECT");
-        }else if(receiveFromClient.startsWith("GETMENU")){
-            sendMenu();
+        switch(receiveFromClient){
+            case "ISCONNECTSERVER":
+                chefHandler.FeedbackToClient("ISCONNECT");
+                break;
+            case "GETMENU":
+                sendMenu();
+                break;
         }
     }
 
     public void sendMenu(){
         Menu menu = new Menu();
-        chefHandler.FeedbackToClient(menu.getMenu());
+        chefHandler.FeedbackToClient(menu.getMenu().toString());
     }
 }

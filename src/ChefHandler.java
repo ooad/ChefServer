@@ -21,10 +21,11 @@ public class ChefHandler extends Thread {
             OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream(), "UTF-8");
             out = new PrintWriter(osw, true);
 
+            Service service = new Service(this);
+
             while(true){
                 receiveMessage = in.readLine();
                 System.out.println(receiveMessage);
-                Service service = new Service(this);
                 service.SelectService(receiveMessage);
             }
                 /*out.println("NAMEACCEPTED");

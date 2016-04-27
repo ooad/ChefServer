@@ -25,8 +25,13 @@ public class ChefHandler extends Thread {
 
             while(true){
                 receiveMessage = in.readLine();
-                System.out.println(receiveMessage);
-                service.SelectService(receiveMessage);
+                switch (receiveMessage){
+                    case "1":
+                    break;
+                    default:
+                        System.out.println(receiveMessage);
+                        service.SelectService(receiveMessage);
+                }
             }
                 /*out.println("NAMEACCEPTED");
                 writers.add(out);*/

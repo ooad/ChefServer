@@ -28,10 +28,11 @@ public class MenuModel {
                 System.out.println(result.getInt("idMeal")+"\t\t"+
                         result.getString("name")+"\t\t"+result.getString("description")+"\t\t"+result.getString("price")+"\t\t"+result.getString("mealType"));
                 jsonObject.put("idMeal",result.getInt("idMeal"));
-                jsonObject.put("name",result.getInt("idMeal"));
-                jsonObject.put("description",result.getInt("idMeal"));
-                jsonObject.put("price",result.getInt("idMeal"));
-                jsonObject.put("mealType",result.getInt("idMeal"));
+                jsonObject.put("name",result.getString("name"));
+                jsonObject.put("description",result.getString("description"));
+                jsonObject.put("price",result.getInt("price"));
+                jsonObject.put("mealType",result.getString("mealType"));
+                System.out.println(jsonObject.toString());
             }
         }
         catch(SQLException e)

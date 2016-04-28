@@ -24,6 +24,6 @@ public class Service {
 
     public void sendMenu(){
         Menu menu = new Menu();
-        chefHandler.feedbackToClient(menu.getMenu().toString());
+        chefHandler.feedbackToClient(menu.getMealList().toString());
     }
 }

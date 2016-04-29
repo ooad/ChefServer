@@ -25,14 +25,14 @@ public class ChefHandler extends Thread {
             while(true){
                 String receiveMessage = requestFromClient.readLine();
                 JSONObject getClientRequest = new JSONObject(receiveMessage);
-                switch (getClientRequest.get("requestServiceType").toString()){
-                    case "Account":
-                        break;
-                    case "ChefClientService":
-                        System.out.println(receiveMessage);
-                        Service service = new Service(this);
-                        service.SelectService(getClientRequest.get("requestService").toString());
-                        break;
+                System.out.println(receiveMessage);
+                if (getClientRequest.getString("requestServiceType").equals("ChefClientService")){
+                    Service service = new Service(this);
+                    service.SelectService(getClientRequest.get("requestService").toString());
+                }else if(getClientRequest.getString("requestServiceType").equals("Account")){
+
+                }else{
+                    feedbackToClient("No Service");
                 }
             }
         } catch (IOException e) {

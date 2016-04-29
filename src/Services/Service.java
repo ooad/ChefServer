@@ -1,7 +1,10 @@
 package Services;
 
 import Main.ChefHandler;
+import Main.Meal;
 import Main.Menu;
+
+import java.util.ArrayList;
 
 /**
  * Created by hank9653 on 2016/4/28.
@@ -24,6 +27,10 @@ public class Service {
 
     public void sendMenu(){
         Menu menu = new Menu();
+        ArrayList<Meal> mealList = menu.getMealList();
+        for (Meal meal: mealList){
+            System.out.println(meal.id+meal.name+meal.description+meal.price+meal.mealType);
+        }
         chefHandler.feedbackToClient(menu.getMealList().toString());
     }
 }

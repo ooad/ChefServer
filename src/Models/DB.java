@@ -25,7 +25,7 @@ public class DB {
             Class.forName("com.mysql.jdbc.Driver");
             //註冊driver
             con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost/chef?useUnicode=true&characterEncoding=UTF8",
+                    "jdbc:mysql://localhost/chefsystem?useUnicode=true&characterEncoding=UTF8",
                     "root","1qaz@WSX");
         }
         catch(ClassNotFoundException e)
@@ -42,14 +42,31 @@ public class DB {
             result = con.createStatement().executeQuery(sql);
         } catch (SQLException e) {
             e.printStackTrace();
+            close();
+        }
+        return result;
+    }
+
+    public boolean execute(String sql){
+        boolean result = true;
+        try {
+            con.createStatement().executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            result = false;
+            close();
         }
         return result;
     }
 
     public void close(){
         try {
-            result.close();
-            con.close();
+            if(result != null){
+                result.close();
+            }
+            if(con != null){
+                con.close();
+            }
         } catch (SQLException e) {
             System.out.println("DB SQL error :"+e.toString());
         }

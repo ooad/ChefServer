@@ -4,23 +4,27 @@
 
 import Main.ChefHandler;
 
-import java.io.PrintWriter;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.HashMap;
-import java.util.HashSet;
 
 
 public class ChefServerService {
-    private static final int PORT = 9001;
-    private static HashMap<String, PrintWriter> test = new HashMap<String, PrintWriter>() ;
-    private static HashSet<String> names = new HashSet<String>();
-    private static HashSet<PrintWriter> writers = new HashSet<PrintWriter>();
+    private static final int PORT = 9002;
+    private static HashMap<String, Socket> user = new HashMap<String, Socket>();
     public static void main(String[] args) throws Exception {
         System.out.println("The chat server is running.");
         ServerSocket listener = new ServerSocket(PORT);
         try {
             while (true) {
-                new ChefHandler(listener.accept()).start();
+                Socket socket = listener.accept();
+                if(socket != null){
+                    ChefHandler chefHandler = new ChefHandler(socket);
+                    user.put("user",socket);
+                    chefHandler.updateUser(user);
+                    Thread thread1 = new Thread(chefHandler);
+                    thread1.start();
+                }
             }
         } finally {
             listener.close();

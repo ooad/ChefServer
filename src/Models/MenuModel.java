@@ -17,7 +17,7 @@ public class MenuModel {
         ResultSet result = db.query(sql);
         ArrayList<Meal> mealList = new ArrayList<>();
         try {
-            Meal meal = null;
+            Meal meal;
             while(result.next()){
                 meal = new Meal();
                 meal.id = result.getInt("idMeal");

@@ -1,7 +1,6 @@
 package Main;
 
-import Manager.MenuManager;
-import Manager.OrderManager;
+import Manager.*;
 import Services.MyServer;
 import Services.Service;
 import org.json.JSONException;
@@ -49,7 +48,7 @@ public class ChefHandler implements Runnable {
                         //orderManager.OrderMeal(1,2,3,'4',5);
                         System.out.println(OrderMeal.getInt("idRestaurant")+"  "+OrderMeal.getInt("tableNum")+"  "+OrderMeal.getInt("idMeal")+"  "+OrderMeal.getInt("idUser"));
                         server.respondToClient("OrderMealSusses");
-                        server.respondToClient("CLOSECONNECT");
+                        
                     }else if(getClientRequest.getString("requestService").equals("GetStatus")){
                         //orderManager.OrderMeal(0,0,3,'4',0);
                         ResultSet result = orderManager.getMealStatus(0);
@@ -61,15 +60,24 @@ public class ChefHandler implements Runnable {
                                 break;
                             }
                         }
-                        server.respondToClient("CLOSECONNECT");
                         //server.close();
                     }
-                }else if(getClientRequest.getString("requestServiceType").equals("Account")){
+                }else if(getClientRequest.getString("requestServiceType").equals("AccountService")){
+                    AccountManager accountManager = new AccountManager();
+                    accountManager.setRespondClient(server);
+                    if(getClientRequest.getString("requestService").equals("Login")){
+                        accountManager.login(getClientRequest.getString("userAccount"), getClientRequest.getString("userPassword"));
+                    }else if(getClientRequest.getString("requestService").equals("Register")){
 
+                    }else if(getClientRequest.getString("requestService").equals("Venfication")){
+
+                    }
                 }else{
                     server.respondToClient("No Service");
-                    server.respondToClient("CLOSECONNECT");
                     System.out.println("no Service");
+                }
+                if(receiveMessage != null){
+                    server.respondToClient("CLOSECONNECT");
                 }
             }
         } catch (JSONException e) {
@@ -78,6 +86,7 @@ public class ChefHandler implements Runnable {
             server.close();
         }catch(NullPointerException e){
             System.out.println("NullPointerException "+e.toString());
+            System.out.println("fuck");
             server.close();
             server = null;
         } catch (SQLException e) {

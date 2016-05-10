@@ -8,6 +8,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.Socket;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 /**
@@ -25,7 +27,7 @@ public class ChefHandler implements Runnable {
         try {
             while(true){
                 String receiveMessage = server.requestFromClient();
-                System.out.println(receiveMessage);
+                System.out.println("message: "+receiveMessage);
                 JSONObject getClientRequest = new JSONObject(receiveMessage);
                 if (getClientRequest.getString("requestServiceType").equals("ChefClientService")){
                     Service service = new Service();
@@ -37,11 +39,31 @@ public class ChefHandler implements Runnable {
                         server.respondToClient(meal.description);
                     }
                     server.closeRespond();
-                }else if(getClientRequest.getString("requestServiceType").equals("OrderManager")){
+                }else if(getClientRequest.getString("requestServiceType").equals("OrderMealService")){
                     OrderManager orderManager = new OrderManager();
+                    //orderManager.SelectService(getClientRequest.get("requestService").toString());
                     orderManager.setRespondClient(server);
-                    orderManager.OrderMeal(1,2,3,'4',5);
-                    //server.closeRespond();
+                    if(getClientRequest.getString("requestService").equals("OrderMeal")){
+                        System.out.println(getClientRequest.getJSONObject("OrderMeal"));
+                        JSONObject OrderMeal = getClientRequest.getJSONObject("OrderMeal");
+                        //orderManager.OrderMeal(1,2,3,'4',5);
+                        System.out.println(OrderMeal.getInt("idRestaurant")+"  "+OrderMeal.getInt("tableNum")+"  "+OrderMeal.getInt("idMeal")+"  "+OrderMeal.getInt("idUser"));
+                        server.respondToClient("OrderMealSusses");
+                        server.respondToClient("CLOSECONNECT");
+                    }else if(getClientRequest.getString("requestService").equals("GetStatus")){
+                        //orderManager.OrderMeal(0,0,3,'4',0);
+                        ResultSet result = orderManager.getMealStatus(0);
+                        while(result.next()){
+                            server.respondToClient(result.getInt("idRestaurant")+"  "+result.getInt("tableNum")+"  "+result.getInt("idMeal")+"  "+result.getString("mealStatus")+"  "+result.getInt("idUser"));
+                        }
+                        while(true){
+                            if(server.requestFromClient().equals("CLOSECONNECT")){
+                                break;
+                            }
+                        }
+                        server.respondToClient("CLOSECONNECT");
+                        //server.close();
+                    }
                 }else if(getClientRequest.getString("requestServiceType").equals("Account")){
 
                 }else{
@@ -51,17 +73,32 @@ public class ChefHandler implements Runnable {
                 }
             }
         } catch (JSONException e) {
-            server.respondToClient("No Service");
+            System.out.println("JSONException "+e.toString());
             server.respondToClient("CLOSECONNECT");
+            server.close();
         }catch(NullPointerException e){
+            System.out.println("NullPointerException "+e.toString());
             server.close();
             server = null;
+        } catch (SQLException e) {
+            System.out.println("SQLException "+e.toString());
+            e.printStackTrace();
         }
     }
 
 
-    public void updateUser(HashMap<String, Socket> user) {
+    public void addUser(HashMap<String, Socket> user) {
         this.user = user;
+        /*for (Object key : user.keySet()) {
+            System.out.println(key + " : " + user.get(key));
+        }*/
+    }
+
+    public void Service() {
+        this.user = user;
+        /*for (Object key : user.keySet()) {
+            System.out.println(key + " : " + user.get(key));
+        }*/
     }
 
 }

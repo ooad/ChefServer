@@ -3,6 +3,8 @@ package Manager;
 import Models.OrderMeal;
 import Services.MyServer;
 
+import java.sql.ResultSet;
+
 /**
  * Created by hank9653 on 2016/5/2.
  */
@@ -19,6 +21,10 @@ public class OrderManager {
         }
         return false;
     }
+    public ResultSet getMealStatus(int idUser){
+        return om.getMealStatus(idUser);
+    }
+
 
     public void setRespondClient(MyServer respondClient) {
         this.myServer = respondClient;

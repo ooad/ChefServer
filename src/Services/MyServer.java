@@ -39,7 +39,9 @@ public class MyServer {
     }
     public void close(){
         try {
-            socket.close();
+            if(socket != null){
+                socket.close();
+            }
         } catch (IOException e) {
             System.out.println("使用者離開:關閉連線");;
         }

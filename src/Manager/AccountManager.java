@@ -7,15 +7,13 @@ import Main.UserInfo;
 /**
  * Created by hank9653 on 2016/5/2.
  */
-public class AccountManager extends AccountModel{
+public class AccountManager{
 	MyServer myServer;
 	public void login(String userAccount, String userPassword){
-		if(accountInquiry(userAccount, userPassword)){
-			//myServer.respondToClient("true");
-			System.out.println("true");
+		if(new AccountModel().accountInquiry(userAccount, userPassword)){
+			myServer.respondToClient("true");
 		}else{
-			//myServer.respondToClient("false");
-			System.out.println("false");
+			myServer.respondToClient("false");
 		}
 	}
 

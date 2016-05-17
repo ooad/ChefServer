@@ -1,6 +1,6 @@
 package Models;
 
-import Main.Meal;
+import Entities.Meal;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

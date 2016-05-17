@@ -1,6 +1,6 @@
 package Models;
 
-import Main.UserInfo;
+import Entities.UserInfo;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

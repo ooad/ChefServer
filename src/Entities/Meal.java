@@ -1,4 +1,4 @@
-package Main;
+package Entities;
 
 /**
  * Created by hank9653 on 2016/4/27.

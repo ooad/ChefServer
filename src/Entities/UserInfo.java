@@ -1,4 +1,4 @@
-package Main;
+package Entities;
 
 public class UserInfo{
 	private String userId;

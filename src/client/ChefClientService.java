@@ -1,6 +1,6 @@
 package client;
 
-import Main.Menu;
+import Entities.Menu;
 
 import java.io.*;
 import java.net.Socket;

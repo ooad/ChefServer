@@ -29,4 +29,9 @@ public class OrderManager {
     public void setRespondClient(MyServer respondClient) {
         this.myServer = respondClient;
     }
+
+    public ResultSet getOrderMenu(int idRestaurant, int tableNum, int idUser){
+        ResultSet result = om.getOrderMenu(idRestaurant, tableNum, idUser);
+        return result;
+    }
 }

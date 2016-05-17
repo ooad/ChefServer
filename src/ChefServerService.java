@@ -20,9 +20,11 @@ public class ChefServerService {
             while (true) {
                 Socket socket = listener.accept();
                 if(socket != null){
+                    int num=i++;
                     ChefHandler chefHandler = new ChefHandler(socket);
-                    user.put("user"+String.valueOf(i++),socket);
-                    chefHandler.addUser(user);
+                    user.put("user"+String.valueOf(num),socket);
+                    chefHandler.setUsers(ChefServerService.user);
+                    chefHandler.setUser("user"+String.valueOf(num));
                     Thread thread1 = new Thread(chefHandler);
                     thread1.start();
                 }

@@ -9,24 +9,26 @@ public class AccountModel{
 	DB db;
 	public boolean accountInquiry(String userId, String userPassword){
 		db = new DB();
-		String [][] userList = null;
+		boolean loginStatus = false;
 		ResultSet resultSet = db.query("SELECT * FROM chefsystem.user WHERE userAccount=\""+userId+"\" AND userPassword=\""+userPassword + "\"");
 
         try {
             if(resultSet!=null){
+
+                System.out.println("ln");
                 while(resultSet.next()) {
-                    userList[0][0] = resultSet.getString("userAccount");
-                    userList[0][1] = resultSet.getString("userPassword");
+                   // userList[0][0] = resultSet.getString("userAccount");
+                   // userList[0][1] = resultSet.getString("userPassword");
+                    loginStatus = true;
+                    System.out.println(resultSet.getString("userAccount"));
+
+                    System.out.println(resultSet.getString("userPassword"));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        if(userList == null)
-			return false;
-		else
-			return true;
+        return loginStatus;
 	}
 
 	public boolean accountInsert(UserInfo userInfo){

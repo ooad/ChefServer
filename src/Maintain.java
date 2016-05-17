@@ -18,8 +18,8 @@ public class Maintain {
                 Socket socket = listener.accept();
                 if(socket != null){
                     ChefHandler chefHandler = new ChefHandler(socket);
-                    user.put("user",socket);
-                    chefHandler.addUser(user);
+                    //ser.put("user",socket);
+                    //chefHandler.addUser(user);
                     Thread thread1 = new Thread(chefHandler);
                     thread1.start();
                 }

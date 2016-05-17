@@ -26,6 +26,16 @@ public class OrderMeal {
         DB db = new DB();
         String sql = "SELECT * FROM ordermeal WHERE idUser="+idUser;
         ResultSet result = db.query(sql);
+        db.close();
+        return result;
+    }
+    public  ResultSet getOrderMenu(int idRestaurant, int tableNum, int idUser){
+        DB db = new DB();
+        String sql = "SELECT * FROM ordermeal WHERE idRestaurant=" + idRestaurant + " AND " +
+                "tableNum=" + tableNum + " AND " +
+                "idUser=" + idUser;
+        ResultSet result = db.query(sql);
+        db.close();
         return result;
     }
 }

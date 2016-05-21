@@ -10,9 +10,9 @@ import Entities.UserInfo;
 public class AccountManager{
 	MyServer myServer;
 
-	public void selectService(String requestService,String userAccount,String userPassword) {
+	public void selectService(String requestService,UserInfo userInfo) {
 		if(requestService.equals("Login")){
-			login(userAccount, userPassword);
+			login(userInfo);
 		}else if(requestService.equals("Register")){
 
 		}else if(requestService.equals("Venfication")){
@@ -20,8 +20,8 @@ public class AccountManager{
 		}
 	}
 
-	public void login(String userAccount, String userPassword){
-		if(new AccountModel().accountInquiry(userAccount, userPassword)){
+	public void login(UserInfo userInfo){
+		if(new AccountModel().accountInquiry(userInfo)){
 			myServer.respondToClient("true");
 		}else{
 			myServer.respondToClient("false");

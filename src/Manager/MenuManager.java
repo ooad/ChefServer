@@ -1,6 +1,7 @@
 package Manager;
 
 import Entities.Menu;
+import Models.DataModels.MenuManagerModel;
 import Models.MenuModel;
 import Models.OrderMeal;
 import Services.MyServer;
@@ -9,27 +10,18 @@ import org.json.JSONObject;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 /**
  * Created by hank9653 on 2016/5/2.
  */
 public class MenuManager {
-    MyServer myServer;
+    private MyServer myServer;
     private MenuModel menuModel= new MenuModel();
-    OrderMeal orderMeal = new OrderMeal();
+    private OrderMeal orderMeal = new OrderMeal();
+    MenuManagerModel menuManagerModel = new MenuManagerModel();
 
-    public Menu getMenu() {
-        Menu menu;
-        menu = new Menu();
-        return menu;
-    }
-
-    public ArrayList<String> getMealType(int restaurant) {
-        return menuModel.getMealType(restaurant);
-    }
-    public String getMeal(int restaurant) {
-        return menuModel.getMeal(restaurant);
+    public Menu getMenu(int restaurant) {
+        return menuModel.getMenu(restaurant);
     }
 
     public void setRespondClient(MyServer server) {
@@ -38,16 +30,11 @@ public class MenuManager {
 
     public void selectService(String requestService, JSONObject getClientRequest) {
         try {
-            if(requestService.equals("getMealType")){
+            if(requestService.equals("getMenu")){
                 System.out.println(getClientRequest.getInt("idRestaurant"));
-                ArrayList<String> mealTypes = getMealType(getClientRequest.getInt("idRestaurant"));
-                for(String mealType : mealTypes){
-                    myServer.respondToClient(mealType);
-                }
-            }else if(requestService.equals("getMenu")){
-                System.out.println(getClientRequest.getInt("idRestaurant"));
-                String meals = getMeal(getClientRequest.getInt("idRestaurant"));
-                myServer.respondToClient(meals);
+                Menu menu = getMenu(getClientRequest.getInt("idRestaurant"));
+                System.out.println(menuManagerModel.encode(menu));
+                myServer.respondToClient(menuManagerModel.encode(menu));
             }else if(requestService.equals("setOrderMeal")){
                 JSONObject OrderMeal = getClientRequest.getJSONObject("data");
                 OrderMeal(OrderMeal.getInt("idRestaurant"),OrderMeal.getInt("tableNum"),OrderMeal.getInt("idMeal"),OrderMeal.getString("mealStatus").charAt(0),OrderMeal.getInt("idUser"));
@@ -58,8 +45,7 @@ public class MenuManager {
                 JSONObject orderMenuAllId = getClientRequest.getJSONObject("data");
                 System.out.println(orderMenuAllId);
                 ResultSet result = getOrderMenu(orderMenuAllId.getInt("idRestaurant"), orderMenuAllId.getInt("tableNum"), orderMenuAllId.getInt("idUser"));
-            }
-            else if(requestService.equals("GetStatus")){
+            }else if(requestService.equals("GetStatus")){
                 //orderManager.OrderMeal(0,0,3,'4',0);
                 ResultSet result = getMealStatus(0);
                 while(result.next()){

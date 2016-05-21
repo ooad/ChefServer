@@ -1,6 +1,7 @@
 import Manager.AccountManager;
 import Manager.MenuManager;
 import Manager.RestaurantManager;
+import Models.DataModels.AccountManagerModel;
 import Services.MyServer;
 import Services.Service;
 import org.json.JSONException;
@@ -39,9 +40,10 @@ public class ChefHandler implements Runnable {
                     menuManager.selectService(getClientRequest.getString("requestService"),getClientRequest);
                     server.closeRespond();
                 }else if(getClientRequest.getString("requestServiceType").equals("AccountService")){
+                    AccountManagerModel accountManagerModel = new AccountManagerModel(getClientRequest);
                     AccountManager accountManager = new AccountManager();
                     accountManager.setRespondClient(server);
-                    accountManager.selectService(getClientRequest.getString("requestService"),getClientRequest.getString("UserAccount"),getClientRequest.getString("UserPassword"));
+                    accountManager.selectService(accountManagerModel.getService(),accountManagerModel.getUserInfo());
                     server.closeRespond();
                 }else if(getClientRequest.getString("requestServiceType").equals("RestaurantManager")){
                     RestaurantManager restaurantManager = new RestaurantManager();
@@ -61,6 +63,7 @@ public class ChefHandler implements Runnable {
             server.respondToClient("CLOSECONNECT");
             server.close();
         }catch(NullPointerException e){
+            e.printStackTrace();
             System.out.println("NullPointerException "+e.toString());
             System.out.println("fuck");
             server.close();

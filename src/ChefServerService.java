@@ -13,16 +13,16 @@ public class ChefServerService {
     public static void main(String[] args) throws Exception {
         System.out.println("The chat server is running.");
         ServerSocket listener = new ServerSocket(PORT);
-        int i=0;
+        //int i=0;
         try {
             while (true) {
                 Socket socket = listener.accept();
                 if(socket != null){
-                    int num=i++;
+                    //int num=i++;
                     ChefHandler chefHandler = new ChefHandler(socket);
-                    user.put("user"+String.valueOf(num),socket);
-                    chefHandler.setUsers(ChefServerService.user);
-                    chefHandler.setUser("user"+String.valueOf(num));
+                    //user.put("user"+String.valueOf(num),socket);
+                    //chefHandler.setUsers(ChefServerService.user);
+                    //chefHandler.setUser("user"+String.valueOf(num));
                     Thread thread1 = new Thread(chefHandler);
                     thread1.start();
                 }

@@ -7,22 +7,17 @@ import java.sql.SQLException;
 
 public class AccountModel{
 	DB db;
-	public boolean accountInquiry(String userId, String userPassword){
+	public boolean accountInquiry(UserInfo userInfo){
 		db = new DB();
 		boolean loginStatus = false;
-		ResultSet resultSet = db.query("SELECT * FROM chefsystem.user WHERE userAccount=\""+userId+"\" AND userPassword=\""+userPassword + "\"");
+		ResultSet resultSet = db.query("SELECT * FROM chefsystem.user WHERE userAccount=\""+userInfo.getUserAccount()+"\" AND userPassword=\""+userInfo.getUserPassword() + "\"");
 
         try {
             if(resultSet!=null){
 
                 System.out.println("ln");
                 while(resultSet.next()) {
-                   // userList[0][0] = resultSet.getString("userAccount");
-                   // userList[0][1] = resultSet.getString("userPassword");
                     loginStatus = true;
-                    System.out.println(resultSet.getString("userAccount"));
-
-                    System.out.println(resultSet.getString("userPassword"));
                 }
             }
         } catch (SQLException e) {
@@ -35,7 +30,7 @@ public class AccountModel{
         return false;
     }
 
-	public UserInfo userInfoInquiry(String userId){
+	public UserInfo userInfoInquiry(UserInfo userInfo){
         return null;
     }
 }

@@ -1,6 +1,9 @@
 package Models;
 
+import Entities.OrderedMeal;
+
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 /**
  * Created by hank9653 on 2016/5/9.
@@ -29,13 +32,23 @@ public class OrderMeal {
         db.close();
         return result;
     }
-    public  ResultSet getOrderMenu(int idRestaurant, int tableNum, int idUser){
+    public ArrayList<OrderedMeal> getOrderMenu(int idRestaurant, int tableNum, int idUser){
+        ArrayList<OrderedMeal> orderMenu = new ArrayList<OrderedMeal>();
         DB db = new DB();
-        String sql = "SELECT * FROM ordermeal WHERE idRestaurant=" + idRestaurant + " AND " +
-                "tableNum=" + tableNum + " AND " +
-                "idUser=" + idUser;
+        String sql = "SELECT * FROM ordermeal NATURAL JOIN meal WHERE idRestaurant=" + idRestaurant + " AND "
+                + "tableNum=" + tableNum + " AND "
+                + "idUser=" + idUser;
         ResultSet result = db.query(sql);
+        try{
+            while(result.next()){
+                OrderedMeal orderedMeal = new OrderedMeal();
+                orderedMeal.setOrderedMeal(result.getInt("idOrderMeal"), result.getString("mealName"), result.getString("mealDescription"), result.getInt("mealPrice"), result.getString("mealType"), result.getInt("mealStatus"));
+                orderMenu.add(orderedMeal);
+            }
+        }catch(Exception e){
+            System.out.println(e.toString());
+        }
         db.close();
-        return result;
+        return orderMenu;
     }
 }

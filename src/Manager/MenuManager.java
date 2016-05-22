@@ -1,6 +1,7 @@
 package Manager;
 
 import Entities.Menu;
+import Entities.OrderedMeal;
 import Models.DataModels.MenuManagerModel;
 import Models.MenuModel;
 import Models.OrderMeal;
@@ -10,6 +11,7 @@ import org.json.JSONObject;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created by hank9653 on 2016/5/2.
@@ -44,7 +46,9 @@ public class MenuManager {
             }else if(requestService.equals("getOrderMenu")){
                 JSONObject orderMenuAllId = getClientRequest.getJSONObject("data");
                 System.out.println(orderMenuAllId);
-                ResultSet result = getOrderMenu(orderMenuAllId.getInt("idRestaurant"), orderMenuAllId.getInt("tableNum"), orderMenuAllId.getInt("idUser"));
+                ArrayList<OrderedMeal> orderMenu = getOrderMenu(orderMenuAllId.getInt("idRestaurant"), orderMenuAllId.getInt("tableNum"), orderMenuAllId.getInt("idUser"));
+                System.out.println(menuManagerModel.orderMenuEncode(orderMenu));
+                myServer.respondToClient(menuManagerModel.orderMenuEncode(orderMenu));
             }else if(requestService.equals("GetStatus")){
                 //orderManager.OrderMeal(0,0,3,'4',0);
                 ResultSet result = getMealStatus(0);
@@ -83,8 +87,7 @@ public class MenuManager {
         return orderMeal.getMealStatus(idUser);
     }
 
-    public ResultSet getOrderMenu(int idRestaurant, int tableNum, int idUser){
-        ResultSet result = orderMeal.getOrderMenu(idRestaurant, tableNum, idUser);
-        return result;
+    public ArrayList<OrderedMeal> getOrderMenu(int idRestaurant, int tableNum, int idUser){
+        return orderMeal.getOrderMenu(idRestaurant, tableNum, idUser);
     }
 }

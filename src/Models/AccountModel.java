@@ -14,8 +14,6 @@ public class AccountModel{
 
         try {
             if(resultSet!=null){
-
-                System.out.println("ln");
                 while(resultSet.next()) {
                     loginStatus = true;
                 }

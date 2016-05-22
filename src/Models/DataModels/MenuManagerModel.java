@@ -1,12 +1,11 @@
 package Models.DataModels;
 
-import Entities.Meal;
-import Entities.MealType;
-import Entities.Menu;
-import Entities.UserInfo;
+import Entities.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by hank9653 on 2016/5/17.
@@ -42,6 +41,28 @@ public class MenuManagerModel {
                 e.printStackTrace();
             }
         }
+        return jsonObject.toString();
+    }
+
+    public String orderMenuEncode(ArrayList<OrderedMeal> orderMenu){
+        JSONObject jsonObject = new JSONObject();
+        JSONArray ja;
+            try {
+                ja = new JSONArray();
+                for(OrderedMeal orderMeal : orderMenu) {
+                    JSONObject orderMealInfo = new JSONObject();
+                    orderMealInfo.put("idOrderMeal", orderMeal.getIdOrderMeal());
+                    orderMealInfo.put("orderMealName", orderMeal.getOrderMealName());
+                    orderMealInfo.put("orderMealDescription", orderMeal.getOrderMealDescription());
+                    orderMealInfo.put("orderMealPrice", orderMeal.getOrderMealPrice());
+                    orderMealInfo.put("orderMealType", orderMeal.getOrderMealType());
+                    orderMealInfo.put("orderMealStatus", orderMeal.getOrderMealStatus());
+                    ja.put(orderMealInfo);
+                }
+                jsonObject.put("orderMenu",ja);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         return jsonObject.toString();
     }
 }

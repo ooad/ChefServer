@@ -21,10 +21,14 @@ public class AccountManager{
 	}
 
 	public void login(UserInfo userInfo){
-		if(new AccountModel().accountInquiry(userInfo)){
-			myServer.respondToClient("true");
+		userInfo = new AccountModel().accountInquiry(userInfo);
+		if(Boolean.valueOf(userInfo.isLogin())){
+			myServer.respondToClient(userInfo.isLogin());
+			myServer.respondToClient(userInfo.getUserType());
+			//System.out.println("islogin");
 		}else{
-			myServer.respondToClient("false");
+			myServer.respondToClient(userInfo.isLogin());
+			//System.out.println("no");
 		}
 	}
 

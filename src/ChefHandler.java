@@ -1,3 +1,4 @@
+import Entities.Users;
 import Manager.AccountManager;
 import Manager.MenuManager;
 import Manager.RestaurantManager;
@@ -8,13 +9,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.Socket;
-import java.util.HashMap;
 
 /**
  * Created by hank9653 on 2016/4/28.
  */
 public class ChefHandler implements Runnable {
-    HashMap<String, Socket> users = new HashMap<String, Socket>();
+    Users users = new Users();
     String user;
     MyServer server;
     Socket socket;
@@ -37,6 +37,7 @@ public class ChefHandler implements Runnable {
                 }else if(getClientRequest.getString("requestServiceType").equals("MenuManager")){
                     MenuManager menuManager = new MenuManager();
                     menuManager.setRespondClient(server);
+                    menuManager.setUsers(users);
                     menuManager.selectService(getClientRequest.getString("requestService"),getClientRequest);
                     server.closeRespond();
                 }else if(getClientRequest.getString("requestServiceType").equals("AccountService")){
@@ -71,31 +72,10 @@ public class ChefHandler implements Runnable {
         }
     }
 
-    private void addUser(String userType, Socket socket) {
-        synchronized(users){
-            users.put("userType",socket);
-            System.out.println(users);
-        }
-    }
 
 
-    public void setUsers(HashMap<String, Socket> user) {
-        synchronized(users){
-            this.users = user;
-        }
-        for (Object key : users.keySet()) {
-            System.out.println(key + " : " + user.get(key));
-        }
-    }
-    public void setUser(String user) {
-        this.user = user;
-    }
 
-    public void Service() {
-        //this.user = user;
-        /*for (Object key : user.keySet()) {
-            System.out.println(key + " : " + user.get(key));
-        }*/
+    public void accept(Users users) {
+        this.users = users;
     }
-
 }

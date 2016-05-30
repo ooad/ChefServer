@@ -39,8 +39,7 @@ public class DB {
 
     public ResultSet query(String sql){
         try {
-
-            System.out.println(sql);
+            //System.out.println(sql);
             result = con.createStatement().executeQuery(sql);
         } catch (SQLException e) {
             e.printStackTrace();

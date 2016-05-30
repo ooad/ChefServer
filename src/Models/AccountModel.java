@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class AccountModel{
 	DB db;
-	public boolean accountInquiry(UserInfo userInfo){
+	public UserInfo accountInquiry(UserInfo userInfo){
 		db = new DB();
 		boolean loginStatus = false;
 		ResultSet resultSet = db.query("SELECT * FROM chefsystem.user WHERE userAccount=\""+userInfo.getUserAccount()+"\" AND userPassword=\""+userInfo.getUserPassword() + "\"");
@@ -15,13 +15,14 @@ public class AccountModel{
         try {
             if(resultSet!=null){
                 while(resultSet.next()) {
-                    loginStatus = true;
+                    userInfo.setUserType(resultSet.getString("userAccount"));
+                    userInfo.loginStatus("true");
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return loginStatus;
+        return userInfo;
 	}
 
 	public boolean accountInsert(UserInfo userInfo){

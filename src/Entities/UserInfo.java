@@ -6,6 +6,7 @@ public class UserInfo{
 	private String userName = null;
 	private String phoneNum = null;
 	private String userType = null;
+	private String loginStatus = "false";
 
 	public void setUserInfo(String userId, String userPassword, String userName, String phoneNum, String userType){
 		this.userAccount = userId;
@@ -27,8 +28,8 @@ public class UserInfo{
 
 	}
 
-	public void setUserType(){
-
+	public void setUserType(String userType){
+		this.userType = userType;
 	}
 
 	public void setUserAccount(String userAccount){
@@ -52,5 +53,11 @@ public class UserInfo{
 	}
 	public String getUserAccount(){
 		return this.userAccount;
+	}
+	public String isLogin(){
+		return loginStatus;
+	}
+	public void loginStatus(String status){
+		this.loginStatus = status;
 	}
 }

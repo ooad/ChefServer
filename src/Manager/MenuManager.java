@@ -2,6 +2,7 @@ package Manager;
 
 import Entities.Menu;
 import Entities.OrderedMeal;
+import Entities.Users;
 import Models.DataModels.MenuManagerModel;
 import Models.MenuModel;
 import Models.OrderMeal;
@@ -10,7 +11,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -21,6 +21,7 @@ public class MenuManager {
     private MenuModel menuModel= new MenuModel();
     private OrderMeal orderMeal = new OrderMeal();
     MenuManagerModel menuManagerModel = new MenuManagerModel();
+    Users users;
 
     public Menu getMenu(int restaurant) {
         return menuModel.getMenu(restaurant);
@@ -49,23 +50,41 @@ public class MenuManager {
                 ArrayList<OrderedMeal> orderMenu = getOrderMenu(orderMenuAllId.getInt("idRestaurant"), orderMenuAllId.getInt("tableNum"), orderMenuAllId.getInt("idUser"));
                 System.out.println(menuManagerModel.orderMenuEncode(orderMenu));
                 myServer.respondToClient(menuManagerModel.orderMenuEncode(orderMenu));
-            }else if(requestService.equals("GetStatus")){
-                //orderManager.OrderMeal(0,0,3,'4',0);
-                ResultSet result = getMealStatus(0);
-                while(result.next()){
-                    myServer.respondToClient(result.getInt("idRestaurant")+"  "+result.getInt("tableNum")+"  "+result.getInt("idMeal")+"  "+result.getString("mealStatus")+"  "+result.getInt("idUser"));
-                }
+            }else if(requestService.equals("getOrderMenuListen")){
+                users.add("user",myServer);
                 while(true){
-                    if(myServer.requestFromClient().equals("CLOSECONNECT")){
+                    String message =  myServer.requestFromClient();
+                    System.out.println("test: "+message);
+                    if(message.equals("CLOSECONNECT")){
+                        System.out.println("break");
+                        break;
+
+                    }else{
+                        System.out.println("talk");
+                        users.talkToUser("user");
+                    }
+                }
+                users.remove("user");
+            }else if(requestService.equals("changeMealStatus")){
+               for (Object key : users.getOnlineUser().keySet()) {
+                    System.out.println(key);
+                    if(key.equals("user")){
+                        MyServer test1 = users.getOnlineUser().get(key);
+                        if(test1 == null){
+
+                            System.out.println("NULL");
+                        }else{
+
+                            test1.respondToClient("Chef made it ok!!.");
+                            System.out.println("MESSAGE IS SEND");
+                        }
                         break;
                     }
                 }
-                //server.close();
+                //myServer.respondToClient(menuManagerModel.orderMenuEncode(orderMenu));
             }
 
         } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -89,5 +108,9 @@ public class MenuManager {
 
     public ArrayList<OrderedMeal> getOrderMenu(int idRestaurant, int tableNum, int idUser){
         return orderMeal.getOrderMenu(idRestaurant, tableNum, idUser);
+    }
+
+    public void setUsers(Users users) {
+        this.users = users;
     }
 }
